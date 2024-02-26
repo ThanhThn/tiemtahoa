@@ -1,7 +1,7 @@
 //Main
 $(document).ready(function () {
   //Show Search
-  let iconSearch = $("#iconSearch");
+  let iconSearch = $(".heading nav li.search");
   let formSearch = $(".form_search");
   iconSearch.click(() => {
     if (parseFloat(formSearch.css("top")) < 0) {
@@ -115,7 +115,7 @@ $(document).ready(function () {
   let mini_cart = $("div.cart");
   let mini_cart_box = $("div.cart .cart_container");
   mini_cart.css("height", `calc(100vh - ${$("header").css("height")})`);
-  $(".icon_cart").click(() => {
+  $(".heading nav li.mini_cart").click(() => {
     $(mini_cart).toggle();
   });
   // $(document).click((e) =>{

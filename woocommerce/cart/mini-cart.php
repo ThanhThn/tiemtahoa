@@ -21,9 +21,14 @@ defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_mini_cart'); ?>
 
-<?php if (!WC()->cart->is_empty()): ?>
-
-	<ul class="woocommerce-mini-cart cart_list product_list_widget <?php //echo esc_attr($args['list_class']); ?>">
+<?php
+global $woocommerce;
+$cart_count = WC()->cart->get_cart_contents_count();
+echo '<div class="total_cart"><h3>Giỏ hàng (' . $cart_count . ')</h3>';
+echo '<span> ' . $woocommerce->cart->get_cart_total() . '</span></div>';
+echo '<hr>';
+if (!WC()->cart->is_empty()): ?>
+	<ul class="woocommerce-mini-cart cart_list product_list_widget <?php //echo esc_attr($args['list_class']);       ?>">
 		<?php
 		do_action('woocommerce_before_mini_cart_contents');
 
@@ -46,12 +51,14 @@ do_action('woocommerce_before_mini_cart'); ?>
 					class="woocommerce-mini-cart-item <?php echo esc_attr(apply_filters('woocommerce_mini_cart_item_class', 'mini_cart_item', $cart_item, $cart_item_key)); ?>">
 					<?php
 					echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						'woocommerce_cart_item_remove_link',
+						'',
 						sprintf(
-							'<a href="%s" class="remove remove_from_cart_button" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
-							esc_url(wc_get_cart_remove_url($cart_item_key)),
+							'<button class="remove remove_button" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">
+							<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M11.25 3.75L3.75 11.25" stroke="#C49A6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M3.75 3.75L11.25 11.25" stroke="#C49A6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg></button>',
 							/* translators: %s is the product name */
-							esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($product_name))),
 							esc_attr($product_id),
 							esc_attr($cart_item_key),
 							esc_attr($_product->get_sku())
@@ -60,7 +67,7 @@ do_action('woocommerce_before_mini_cart'); ?>
 					);
 					?>
 					<?php if (empty($product_permalink)): ?>
-						<?php echo $thumbnail . wp_kses_post($product_name); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo $thumbnail . wp_kses_post($product_name); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                                   ?>
 					<?php else: ?>
 						<a href="<?php echo esc_url($product_permalink); ?>">
 							<?php echo wp_kses_post(apply_filters('woocommerce_order_item_thumbnail', $_product->get_image(), $cart_item)); ?>
@@ -68,8 +75,8 @@ do_action('woocommerce_before_mini_cart'); ?>
 								<span>
 									<?php echo wp_kses_post($product_name); ?>
 								</span>
-								<?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								<?php echo apply_filters('woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf('%s &times; %s', $cart_item['quantity'], $product_price) . '</span>', $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                                   ?>
+								<?php echo apply_filters('woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf('%s &times; %s', $cart_item['quantity'], $product_price) . '</span>', $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                                   ?>
 							</div>
 						</a>
 					<?php endif; ?>
@@ -81,11 +88,11 @@ do_action('woocommerce_before_mini_cart'); ?>
 		?>
 	</ul>
 
-	<p class="woocommerce-mini-cart__total total">
+	<!-- <p class="woocommerce-mini-cart__total total">
 		<strong>TỔNG :</strong>
 		<span>
-			<?php global $woocommerce; ?>
-			<?php echo $woocommerce->cart->get_cart_total(); ?>
+			<?php //global $woocommerce;                                  ?>
+			<?php //echo $woocommerce->cart->get_cart_total();                                  ?>
 		</span>
 		<?php
 		/**
@@ -95,12 +102,14 @@ do_action('woocommerce_before_mini_cart'); ?>
 		 */
 		// do_action('woocommerce_widget_shopping_cart_total');
 		?>
-	</p>
+	</p> -->
 
 	<?php do_action('woocommerce_widget_shopping_cart_before_buttons'); ?>
 
 	<p class="woocommerce-mini-cart__buttons buttons">
-		<?php woocommerce_widget_shopping_cart_proceed_to_checkout() //do_action('woocommerce_widget_shopping_cart_buttons'); ?>
+		<?php
+		echo '<a href="' . esc_url(wc_get_checkout_url()) . '" class="button checkout wc-forward">' . esc_html__('Tiến hành thanh toán', 'woocommerce') . '</a>';
+		//do_action('woocommerce_widget_shopping_cart_buttons');                                   ?>
 	</p>
 
 	<?php do_action('woocommerce_widget_shopping_cart_after_buttons'); ?>

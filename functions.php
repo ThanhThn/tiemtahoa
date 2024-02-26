@@ -302,6 +302,33 @@ function ajax_quickView()
 }
 add_action('wp_ajax_quickView', __NAMESPACE__ . '\\ajax_quickView');
 add_action('wp_ajax_nopriv_quickView', __NAMESPACE__ . '\\ajax_quickView');
+
+//Remove product in the cart
+function ajax_product_remove()
+{
+	ob_start();
+	foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+		if ($cart_item['product_id'] == $_POST['product_id'] && $cart_item_key == $_POST['cart_item_key']) {
+			WC()->cart->remove_cart_item($cart_item_key);
+		}
+	}
+	WC()->cart->calculate_totals();
+	WC()->cart->maybe_set_cart_cookies();
+	woocommerce_mini_cart();
+	$mini_cart = ob_get_clean();
+
+	//Fragments and mini cart are returned
+	$data = [
+		'fragments' => apply_filters('woocommerce_add_to_cart_fragments', [
+			'widget_shopping_cart_content' => $mini_cart
+		]),
+		'cart_hash' => apply_filters('woocommerce_add_to_cart_hash', WC()->cart->get_cart_for_session() ? md5(json_encode(WC()->cart->get_cart_for_session())) : '', WC()->cart->get_cart_for_session())
+	];
+	wp_send_json($data);
+	die();
+}
+add_action('wp_ajax_product_remove', __NAMESPACE__ . '\\ajax_product_remove');
+add_action('wp_ajax_nopriv_product_remove', __NAMESPACE__ . '\\ajax_product_remove');
 //Custom Currency
 add_filter('woocommerce_currencies', 'add_cw_currency');
 function add_cw_currency($cw_currency)

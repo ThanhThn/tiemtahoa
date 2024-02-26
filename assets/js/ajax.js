@@ -92,7 +92,41 @@ $(document).ready(function ($) {
       e.preventDefault();
       showPopupProduct($(this).parents("li").attr("product_id"));
     });
-    // btnCart.click(function (e) {
-    //   showPopupProduct(e, $(this).parents("li").attr("product_id"));
+
+    //Delete product in the cart
+    $('.mini_cart_item button.remove_button').click(function(e){
+      e.preventDefault();
+      let productId = $(this).attr('data-product_id');
+      let cartItemKey = $(this).attr('data-cart_item_key');
+      let productContainer = $(this).parents('.cart_container');
+    //   // product_container.block({
+    //   //   message: null,
+    //   //   overlayCSS: {
+    //   //       cursor: 'none'
+    //   //   }
     // });
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: siteConfig.ajaxUrl,
+        data:{
+          action: "product_remove",
+          product_id: productId,
+          cart_item_key: cartItemKey
+        },
+        success: function(response){
+          if(!response || response.error){
+            return;
+          }
+          var fragments = response.fragments;
+          if(fragments){
+            $.each(fragments, function(key, value){
+              $(key).replaceWith(value);
+            })
+          }
+          productContainer.html('')
+          productContainer.append(response.fragments.widget_shopping_cart_content);
+        }
+      })
+    })
 });
