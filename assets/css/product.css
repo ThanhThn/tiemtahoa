@@ -1,0 +1,102 @@
+ul.products{
+  display: flex;
+  gap: 20px
+}
+
+.product_card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 29.8rem;
+}
+ul.products li.product {
+  box-shadow: 0px 0px 10px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  margin: 0;
+  width: 315px;
+  height: fit-content;
+  overflow: hidden;
+  transition: 0.4s;
+  padding: 15px;
+}
+ul.products li.product:hover {
+  height: 100%;
+}
+ul.products li.product:hover button {
+  display: block;
+}
+ul.products li.product a {
+  display: flex;
+  flex-direction: column;
+}
+ul.products li.product a img {
+  border-radius: 10px;
+  height: 251px;
+  object-fit: cover;
+  margin: 0;
+}
+ul.products li.product .woocommerce-loop-product__title {
+  text-transform: uppercase;
+  font-size: 20px;
+  height: 61px;
+  font-weight: 700;
+  color: #509e2f;
+  margin: 26px 0 13px 6px;
+  padding: 0;
+}
+ul.products li.product .price {
+  font-family: var(--second-font);
+  font-size: 20px;
+  color: #000;
+  font-weight: 500;
+  margin-left: 6px;
+  margin-bottom: 0;
+}
+ul.products li.product button{
+  display: none;
+}
+ul.products li.product  button {
+  font-family: var(--second-font);
+  width: 100%;
+  border: 1px solid var(--primary_color_90);
+  cursor: pointer;
+  background: var(--white);
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--primary_color_90);
+  text-transform: uppercase;
+  transition: 0.3s;
+  height: 45px;
+  margin-top: 12px;
+}
+ul.products li.product:hover button {
+  display: block;
+}
+
+ul.products li.product button:hover {
+  color: var(--white_color, #fff);
+  background: var(--primary_color_90);
+}
+/* Cart */
+.img_product {
+  position: relative;
+}
+ul.products li.product .img_product a#sp-wqv-view-button.sp-wqv-view-button {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Quick View */
+ul.products li.product a.add_to_cart_button {
+  display: none;
+}
