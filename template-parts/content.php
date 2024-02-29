@@ -11,8 +11,16 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-
-	<?php tthhcn_post_thumbnail(); ?>
+	<div class="single_blog_title">
+		<?php
+		echo '<p>' . get_the_title() . '</p>';
+		echo '<span>' . get_the_time('F j, Y') . '</span>';
+		echo '<div class="author">' . get_the_author() . '</div>';
+		?>
+	</div>
+	<?php
+	tthhcn_post_thumbnail();
+	?>
 
 	<div class="entry-content">
 		<?php
@@ -31,16 +39,16 @@
 			)
 		);
 
-		wp_link_pages(
-			array(
-				'before' => '<div class="page-links">' . esc_html__('Pages:', 'tthhcn'),
-				'after' => '</div>',
-			)
-		);
-		?>
+		// wp_link_pages(
+		// 	array(
+		// 		'before' => '<div class="page-links">' . esc_html__('Pages:', 'tthhcn'),
+		// 		'after' => '</div>',
+		// 	)
+		// );
+		//      ?>
 	</div><!-- .entry-content -->
 
-	<footer class="entry-footer">
-		<?php tthhcn_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
+	<!-- <footer class="entry-footer">
+		<?php //tthhcn_entry_footer();     ?>
+	</footer>.entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

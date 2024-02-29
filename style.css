@@ -1280,6 +1280,7 @@ div.cart {
   padding: 0;
   overflow-y: scroll;
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 15px;
   flex: 1;
@@ -1290,13 +1291,14 @@ div.cart {
 
 .mini_cart_item {
   position: relative;
+  width: 99%;
+  border-radius: 12px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .mini_cart_item a{
   display: flex;
   height: 10rem;
   width: 100%;
-  border-radius: 12px;
   padding: 8px;
   
 }
@@ -1945,8 +1947,45 @@ div[data-block-name="woocommerce/checkout"] {
   font-style: italic;
   font-weight: 400;
 }
-
-
+/* Single Blog */
+.single_blog_title{
+  background: var(--primary_color_20);
+  text-align: left;
+  padding: 10rem 10rem 14rem 10rem;
+}
+.single_blog_title p{
+  font-size: 2.4rem;
+  font-weight: 700;
+  padding-bottom: 1.6rem;
+}
+.single_blog_title :where(span, div){
+  padding-right: 3rem;
+  font-weight: 500;
+  font-size: 18px;
+}
+.single_blog_title .author{
+  text-transform: capitalize;
+  display: inline-block;
+}
+.post-thumbnail img{
+  padding: 0 8rem;
+  height: 32rem;
+  object-fit: cover;
+  margin-top: -12rem;
+}
+.entry-content{
+  padding: 1rem 4rem;
+}
+.entry-content p{
+  line-height: 2;
+  font-size: 18px;
+}
+.entry-content a{
+  color: var(--primary_color_90);
+}
+.entry-content a:hover{
+  color: var(--primary_color_60);
+}
 /* Footer */
 footer{
   margin-top: 32px;
@@ -1986,3 +2025,144 @@ footer .footer_content .contact li, footer .footer_content .contact li a{
 footer .footer_content .contact li strong{
   font-weight: 600;
 }
+/* Check Out */
+form.checkout{
+  display: grid;
+  grid-template-columns: 60% 36%;
+  gap: 2.4rem;
+}
+form.checkout h3{
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+form.checkout .amount{
+  font-family: var(--second-font);
+}
+form.checkout .thumbnail img{
+  object-fit: cover;
+  height: 100%;
+  border-radius: 4px;
+}
+#customer_details, #product_details{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  height: fit-content;
+}
+form.checkout #product_details table{
+  margin-top: 1.2rem;
+}
+form.checkout :is(#customer_details, #product_details) td{
+  border: 0;
+}
+form.checkout :is(#customer_details, #product_details) strong{
+  font-family: var(--second-font);
+}
+form.checkout :is(#customer_details, #product_details) .shop_table  td:first-child{
+  flex: 1;
+  font-size: 18px;
+}
+form.checkout #product_details .shop_table  td:first-child span{
+  padding-left: 1rem;
+}
+form.checkout :is(#customer_details, #product_details) :where(td,tr){
+  display: flex;
+  align-items: center;
+}
+#customer_details label{
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-top: 1rem;
+  padding-bottom: .6rem;
+}
+#customer_details :where(input, textarea), #input_coupon input{
+  border-radius: 6px;
+  padding: 16px 10px;
+  font-size: 1rem;
+  color: #111;
+  font-weight: 600;
+}
+#customer_details :where(input, textarea):focus, #input_coupon input{
+  border: 2.4px solid var(--primary_color_90);
+  outline:2.4px solid var(--primary_color_30);
+  outline-offset: 2px;
+}
+#customer_details textarea{
+  resize: vertical;
+}
+
+#customer_details #payment{
+  background: var(--white_color);
+}
+#customer_details #payment div.payment_box{
+  background: var(--primary_color_20);
+} 
+#customer_details #payment div.payment_box::before{
+  border-bottom-color: var(--primary_color_20);
+} 
+#customer_details #payment button{
+  color: var(--primary_color_90);
+  border: 1px solid var(--primary_color_90);
+  background-color: var(--white_color);
+  font-size: 18px;
+  width: 30%;
+  border-radius: 4px;
+}
+#customer_details #payment button:hover{
+  background-color: var(--primary_color_90);
+  color: var(--white_color);
+}
+
+.total_fee{
+  border: 1px solid rgba(0,0,0,.1);
+  padding: 10px;
+  border-radius: 5px;
+}
+.total_fee tr{
+  padding: 6px 0;
+}
+.total_fee th{
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.total_fee td{
+  flex: 1;
+}
+.total_fee td :where(span, strong, ul){
+  width: 100%;
+  text-align: end;
+  font-weight: 600;
+}
+/* Coupon */
+#input_coupon{
+  display: flex;
+  gap: 10px;
+}
+#input_coupon input{
+  padding: 6px;
+  width: 70%;
+}
+#input_coupon button{
+  color: var(--primary_color_90);
+  border: 1px solid var(--primary_color_90);
+  background-color: var(--white_color);
+  font-size: 16px;
+  width: 30%;
+  border-radius: 4px;
+}
+#input_coupon button:hover{
+  background-color: var(--primary_color_90);
+  color: var(--white_color);
+}
+
+
+@media screen and (max-width: 700px){
+  form.checkout{
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 2.4rem;
+  }
+  #product_details{
+    grid-row: 1/3;
+  }
+} 

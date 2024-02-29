@@ -11,7 +11,7 @@ if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 	define('_S_VERSION', '1.0.0');
 }
-
+include(get_stylesheet_directory() . '/inc/custom-taxonomy.php');
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -385,6 +385,26 @@ function get_post_views($postID)
 		return "0 View";
 	}
 	return $count . ' Views';
+}
+
+//CheckOut
+add_filter('woocommerce_default_address_fields', 'customize_billing_fields', 100);
+function customize_billing_fields($fields)
+{
+	if (is_checkout()) {
+		$chosen_fields = array('first_name', 'last_name', 'address_2', 'postcode', 'country', 'state');
+		foreach ($chosen_fields as $key) {
+			if (isset($fields[$key])) {
+				unset($fields[$key]);
+			}
+		}
+	}
+	$fields['full_name'] = [
+		'label' => 'Họ và tên',
+		'required' => true,
+		'priority' => 5
+	];
+	return $fields;
 }
 /**
  * Implement the Custom Header feature.

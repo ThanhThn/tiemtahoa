@@ -108,6 +108,10 @@ $(document).ready(function () {
     img_show.attr("src", img_product);
     $(".img_detail > div").removeClass("hover");
   });
+  //Show coupon
+  let btnCoupon = $(".showcoupon");
+  let containCoupon = $(".checkout_coupon");
+  btnCoupon.click(() => {})
 });
 
 //Cart
