@@ -25,12 +25,14 @@ if (class_exists('WooCommerce')) {
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 		integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://malsup.github.io/jquery.blockUI.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 </head>
 
 <body>
@@ -65,7 +67,7 @@ if (class_exists('WooCommerce')) {
 					if ($tthhcn_description || is_customize_preview()):
 						?>
 						<!-- <p class="site-description">
-							<?php echo $tthhcn_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                                           ?>
+							<?php echo $tthhcn_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped                                              ?>
 						</p> -->
 					<?php endif; ?>
 				</div><!-- .site-branding -->

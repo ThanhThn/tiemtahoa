@@ -240,17 +240,18 @@ function paginate($current_page, $query = null)
 }
 
 //AJAX
-function asset_ajax()
+function asset_script()
 {
 	wp_enqueue_script('index', get_template_directory_uri() . '/assets/js/index.js', ['jquery'], _S_VERSION, true);
-	wp_enqueue_script('app', get_template_directory_uri() . '/assets/js/ajax.js', ['jquery'], _S_VERSION, true);
+	wp_enqueue_script('app', get_template_directory_uri() . '/assets/js/ajax/ajax.js', ['jquery'], _S_VERSION, true);
+	wp_enqueue_script('add_to_cart', get_template_directory_uri() . '/assets/js/ajax/ajax_add_to_cart.js', ['jquery'], _S_VERSION, true);
 	wp_enqueue_script('gsap', get_template_directory_uri() . '/assets/js/gsap.js', ['jquery'], _S_VERSION, true);
 	wp_localize_script('app', 'siteConfig', [
 		'ajaxUrl' => admin_url('admin-ajax.php'),
 		'ajax_nonce' => wp_create_nonce('loadmore_post_nonce'),
 	]);
 }
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\asset_ajax');
+add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\asset_script');
 
 function ajax_script_asset_ajax(bool $initial_request = false)
 {
@@ -329,6 +330,44 @@ function ajax_product_remove()
 }
 add_action('wp_ajax_product_remove', __NAMESPACE__ . '\\ajax_product_remove');
 add_action('wp_ajax_nopriv_product_remove', __NAMESPACE__ . '\\ajax_product_remove');
+//Add product in the cart
+function ajax_product_add()
+{
+	$product_id = apply_filters('add_to_cart_product_id', absint($_POST['product_id']));
+	$quantity = empty($_POST['quantity']) ? 1 : wc_stock_amount($_POST['quantity']);
+	$variation_id = absint($_POST['variation_id']);
+	$passed_validation = apply_filters('add_to_cart_validation', true, $product_id, $quantity);
+	$product_status = get_post_status($product_id);
+	if ($passed_validation && WC()->cart->add_to_cart($product_id, $quantity, $variation_id) && 'publish' === $product_status) {
+		refresh_product();
+		// WC_AJAX::get_refreshed_fragments();
+	}
+
+	wp_die();
+}
+add_action('wp_ajax_product_add', __NAMESPACE__ . '\\ajax_product_add');
+add_action('wp_ajax_nopriv_product_add', __NAMESPACE__ . '\\ajax_product_add');
+/* End Ajax */
+// Refresh product in the cart
+function refresh_product()
+{
+	ob_start();
+	WC()->cart->get_cart();
+	WC()->cart->calculate_totals();
+	WC()->cart->maybe_set_cart_cookies();
+	woocommerce_mini_cart();
+	$mini_cart = ob_get_clean();
+
+	//Fragments and mini cart are returned
+	$data = [
+		'fragments' => apply_filters('woocommerce_add_to_cart_fragments', [
+			'widget_shopping_cart_content' => $mini_cart
+		]),
+		'cart_hash' => apply_filters('woocommerce_add_to_cart_hash', WC()->cart->get_cart_for_session() ? md5(json_encode(WC()->cart->get_cart_for_session())) : '', WC()->cart->get_cart_for_session())
+	];
+	wp_send_json($data);
+	die();
+}
 //Custom Currency
 add_filter('woocommerce_currencies', 'add_cw_currency');
 function add_cw_currency($cw_currency)
@@ -406,6 +445,21 @@ function customize_billing_fields($fields)
 	];
 	return $fields;
 }
+
+// Add Button Buy Now
+// Add buy now button to WooCommerce
+function add_content_after_addtocart()
+{
+
+	$current_product_id = get_the_ID();
+
+	$product = wc_get_product($current_product_id);
+
+	$checkout_url = wc_get_checkout_url();
+
+	echo '<a href="' . $checkout_url . '?add-to-cart=' . $current_product_id . '" class="buy-now-btn button">Mua ngay</a>';
+}
+add_action('woocommerce_after_add_to_cart_button', 'add_content_after_addtocart');
 /**
  * Implement the Custom Header feature.
  */

@@ -46,6 +46,31 @@
 		</div>
 		<div class="information">
 			<h6>Thông tin</h6>
+			<ul>
+				<?php
+				$policy_category = new WP_Query(
+					array(
+						'tax_query' => array(
+							array(
+								'taxonomy' => 'cate',
+								'field' => 'name',
+								'terms' => 'Chính sách',
+							),
+						),
+					)
+				);
+
+				if ($policy_category->have_posts()) {
+					while ($policy_category->have_posts()) {
+						$policy_category->the_post();
+						echo '<li>';
+						echo '<a href="' . get_the_permalink() . '">' . get_the_title() . '</a>';
+						echo '</li>';
+					}
+					wp_reset_postdata();
+				}
+				?>
+			</ul>
 		</div>
 		<div class="social">
 			<h6>Mạng xã hội</h6>

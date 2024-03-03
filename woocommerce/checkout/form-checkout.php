@@ -27,7 +27,7 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 
 ?>
 
-<form name="checkout" method="post" class="checkout woocommerce-checkout"
+<form name="checkout" method="post" class="checkout woocommerce-checkout ph-4 pv-1"
 	action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data">
 
 	<?php if ($checkout->get_checkout_fields()): ?>
@@ -118,7 +118,7 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 
 				<?php if (wc_tax_enabled() && !WC()->cart->display_prices_including_tax()): ?>
 					<?php if ('itemized' === get_option('woocommerce_tax_total_display')): ?>
-						<?php foreach (WC()->cart->get_tax_totals() as $code => $tax): // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited                                           ?>
+						<?php foreach (WC()->cart->get_tax_totals() as $code => $tax): // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited                                            ?>
 							<tr class="tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
 								<th>
 									<?php echo esc_html($tax->label); ?>

@@ -75,17 +75,20 @@ $(document).ready(function () {
     $(".description_container .description").slideToggle();
   });
   //Input quantity product
-  let btnDecrease = $(".quantity button:first-child");
-  let btnIncrease = $(".quantity button:last-child");
-  let inputQuantity = $(".quantity input");
-  let quantity = parseInt(inputQuantity.val());
-  btnIncrease.click(() => {
+  // Use event delegation to handle click events on dynamically added elements
+  $(document).on("click", ".quantity button:last-child", function () {
+    // Increment quantity
+    let inputQuantity = $(this).closest(".quantity").find("input");
+    let quantity = parseInt(inputQuantity.val()) || 0;
     quantity++;
     inputQuantity.val(quantity);
   });
-  btnDecrease.click(() => {
-    quantity--;
-    if (quantity < 1) quantity = 1;
+
+  $(document).on("click", ".quantity button:first-child", function () {
+    // Decrement quantity with a minimum value of 1
+    let inputQuantity = $(this).closest(".quantity").find("input");
+    let quantity = parseInt(inputQuantity.val()) || 0;
+    quantity = Math.max(1, quantity - 1);
     inputQuantity.val(quantity);
   });
 
@@ -111,7 +114,7 @@ $(document).ready(function () {
   //Show coupon
   let btnCoupon = $(".showcoupon");
   let containCoupon = $(".checkout_coupon");
-  btnCoupon.click(() => {})
+  btnCoupon.click(() => {});
 });
 
 //Cart
@@ -122,9 +125,16 @@ $(document).ready(function () {
   $(".heading nav li.mini_cart").click(() => {
     $(mini_cart).toggle();
   });
-  // $(document).click((e) =>{
-  //   if(mini_cart.css("display") != "none"){
-  //     if(!mini_cart_box.is(e.target) && !$(".icon_cart").is(e.target)) $(mini_cart).toggle();
-  //   }
-  // })
+  $(mini_cart)
+    .off("click")
+    .on("click", (event) => {
+      if (mini_cart.is(":visible")) {
+        if (
+          !mini_cart_box.is(event.target) &&
+          mini_cart_box.has(event.target).length === 0
+        ) {
+          mini_cart.hide();
+        }
+      }
+    });
 })(jQuery);

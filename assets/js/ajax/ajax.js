@@ -61,14 +61,16 @@ $(document).ready(function ($) {
 
 
     // Popup Product
-    let popUpContainer = $(".popup_container");
-    let btnView = $(".product_card .product button");
-    let loading = '<span class="loader"></span>';
-    // let btnCart = $(".img_product i");
+    const popUpContainer = $(".popup_container");
+    const btnView = $(".product_card .product button");
+    const loading = '<span class="loader"></span>';
+    let popUpProduct = "";
+    
     function showPopupProduct(id) {
       popUpContainer.html("");
       popUpContainer.append(loading);
       popUpContainer.show();
+    
       $.ajax({
         url: siteConfig.ajaxUrl,
         type: "post",
@@ -78,33 +80,54 @@ $(document).ready(function ($) {
         },
         success: function (response) {
           if (response) {
-            popUpContainer.html("");
-            popUpContainer.append(response);
-            let btnClose = $(".popup_product .close");
-            btnClose.click(() => {
-              popUpContainer.hide();
-            });
+            popUpContainer.show();
+            const waitForTimeout = () => {
+              return new Promise(resolve => {
+                  setTimeout(() => {
+                      resolve();
+                  }, 500);
+              });
+          };
+          waitForTimeout().then(() => {
+              popUpContainer.html("");
+              popUpContainer.html(response);
+              updatePopupProductThumbnailHeight();
+              popUpProduct = $(".popup_product");
+              $(document).off("click").on("click", handleDocumentClick);
+          });
           }
         },
       });
     }
+    
     btnView.click(function (e) {
       e.preventDefault();
-      showPopupProduct($(this).parents("li").attr("product_id"));
+      const id = $(this).parents("li").attr("product_id");
+      showPopupProduct(id);
     });
-
+    
+    function handleDocumentClick(event) {
+      if (popUpContainer.is(":visible")) {
+        if (!popUpProduct.is(event.target) && popUpProduct.has(event.target).length === 0) {
+          popUpContainer.hide();
+        }
+      }
+    }
+    
+    function updatePopupProductThumbnailHeight() {
+      $(".popup_product-thumbnail").height($(".popup_product").height());
+    }
+    popUpContainer.on("click", ".popup_product .close", function () {
+      popUpContainer.hide();
+  });
+  
     //Delete product in the cart
-    $('.mini_cart_item button.remove_button').click(function(e){
+    $('.cart_container').on('click', '.mini_cart_item button.remove_button',function(e){
       e.preventDefault();
       let productId = $(this).attr('data-product_id');
       let cartItemKey = $(this).attr('data-cart_item_key');
       let productContainer = $(this).parents('.cart_container');
-    //   // product_container.block({
-    //   //   message: null,
-    //   //   overlayCSS: {
-    //   //       cursor: 'none'
-    //   //   }
-    // });
+      productContainer.append(`<div class ="loading">${loading}</div>`)
       $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -129,6 +152,10 @@ $(document).ready(function ($) {
         }
       })
     })
+
+
+
+    // Sự kiện của document
 });
 
 

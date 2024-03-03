@@ -150,5 +150,32 @@ function option_page($option_pages)
     );
 
     return $option_pages;
-
 }
+
+// Create taxonomy for page
+function taxonomy_page()
+{
+    $label = [
+        'name' => 'Các phân loại',
+        'singular_name' => 'Phân loại',
+        'menu_name' => 'Danh mục phân loại',
+        'all_items' => 'Tất cả phân loại',
+        'add_new_item' => 'Thêm phân loại mới',
+        'new_item_name' => 'Tên phân loại mới',
+        'edit_item' => 'Chỉnh sửa',
+        'update_item' => 'Cập nhập',
+        'search_items' => 'Tìm kiếm phân loại',
+        'add_or_remove_items' => 'Thêm và xóa phân loại',
+    ];
+    $args = [
+        'labels' => $label,
+        'hierarchical' => true,
+        'public' => true,
+        'show_ui' => true,
+        'show_admin_column' => true,
+        'show_in_nav_menus' => true,
+        'show_tagcloud' => true,
+    ];
+    register_taxonomy('cate', 'page', $args);
+}
+add_action('init', 'taxonomy_page');

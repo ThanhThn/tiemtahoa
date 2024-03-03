@@ -1,4 +1,4 @@
-<?php /* Template Name: Home */?>
+<?php /* Template Name: Home */ ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri() . '/assets/css/home.css'; ?>">
@@ -47,31 +47,31 @@
         } ?>
     </ul>
 </div>
-<section id="featured" class="my-5 pb-5">
-    <div class="container text-center mt-5 py-5">
-        <!-- Categories -->
-        <?php $product_categories = get_terms('product_cat'); ?>
-        <h3>Categories</h3>
-        <hr class="mx-auto">
-        <p>Here you can check out our products categories</p>
-    </div>
+
+<section id="featured" class="my-5 category">
+    <!-- Categories -->
+    <?php $product_categories = get_terms('product_cat'); ?>
+    <h3 class="mt-5 py-5">Danh mục sản phẩm</h3>
     <?php if ($product_categories) { ?>
-        <div class="row mx-auto container-fluid">
+        <div class="row">
             <?php foreach ($product_categories as $category) { ?>
-                <div class="product text-center col-lg-3 co-md-4 col-sm-12">
-                    <a href="<?php echo get_term_link($category) ?>">
+                <a class="product text-center col-lg-3 co-md-4 col-sm-12" href="<?php echo get_term_link($category) ?>">
+                    <?php
+                    $thumbnail_id = get_woocommerce_term_meta($category->term_id, 'thumbnail_id', true);
+                    $image = wp_get_attachment_url($thumbnail_id);
+                    ?>
+                    <h5 class="p-name">
+                        <?php echo $category->name ?>
+                    </h5>
+                    <div>
                         <?php
-                        $thumbnail_id = get_woocommerce_term_meta($category->term_id, 'thumbnail_id', true);
-                        $image = wp_get_attachment_url($thumbnail_id);
                         if ($image) {
-                            echo '<img src="' . $image . '" alt="' . $category->name . '" class="img-fluid mb-3">';
+                            echo '<img src="' . $image . '" alt="' . $category->name . '" class="img-fluid">';
                         } ?>
-                        <h5 class="p-name">
-                            <?php echo $category->name ?>
-                        </h5>
-                        <button class="buy-btn">Shop now</button>
-                    </a>
-                </div>
+                    </div>
+
+
+                </a>
             <?php } ?>
         </div>
     <?php } ?>
@@ -86,53 +86,31 @@
     </div>
 </section>
 
-<section>
+<section id="post">
     <!--testimonial--------->
-    <div class="testimonial">
-        <div class="small-container">
-            <div class="row" style="width: 100%">
-                <div class="col-3">
-                    <i class="fa fa-quote-left"></i>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the
-                    </p>
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
-                    <h3>Sean Parker</h3>
-                </div>
-                <div class="col-3">
-                    <i class="fa fa-quote-left"></i>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
-                    <h3>Mike Smith</h3>
-                </div>
-                <div class="col-3">
-                    <i class="fa fa-quote-left"></i>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the
-                    </p>
-                    <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
-                    <h3>Sean Parker</h3>
-                </div>
-            </div>
+    <div class="post">
+        <!-- All post -->
+        <div class="post_header category_header">
+            <span>
+                BÀI VIẾT
+            </span>
+        </div>
+        <div class="posts">
+            <?php
+            $args = [
+                'posts_per_page' => 3,
+            ];
+            $query = new WP_Query($args);
+            while ($query->have_posts()):
+                $query->the_post();
+                get_template_part('template-parts/content_card/content', get_post_type());
+                /*
+                 * Include the Post-Type-specific template for the content.
+                 * If you want to override this in a child theme, then include a file
+                 * called content-___.php  (where ___ is the Post Type name) and that will be used instead.
+                 */
+            endwhile;
+            wp_reset_postdata(); ?>
         </div>
     </div>
 </section>

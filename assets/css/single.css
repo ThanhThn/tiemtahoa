@@ -79,7 +79,9 @@
   height: 100%;
   border-radius: 10px;
   border: 2px solid var(--primary_color_90);
-  background: var(--white);
+}
+.quantity_container .quantity button:hover{
+  background: var(--primary_color_90);
 }
 
 .quantity_container .quantity button,
@@ -93,7 +95,7 @@
   background: var(--primary_color_90);
 }
 .quantity_container .quantity button:hover path {
-  stroke: var(--primary_color_90);
+  stroke: var(--white_color);
 }
 .quantity_container .quantity button:active path {
   stroke: #fff;
@@ -121,7 +123,7 @@
   border: 0;
 }
 
-.quantity_container button {
+.quantity_container :where(button, a) {
   color: var(--primary_color_90);
   border: 2px solid var(--primary_color_90);
   border-radius: 10px;
@@ -132,7 +134,7 @@
   text-transform: capitalize;
   cursor: pointer;
 }
-.quantity_container button:hover {
+.quantity_container :where(button, a):hover {
   background: var(--primary_color_90);
   color: var(--white, #fff);
   transition: 0.2s;
@@ -148,18 +150,18 @@
   gap: 8px;
   padding: 0 28px;
 }
-.quantity_container button.add-to-cart,
-.quantity_container button.single_add_to_cart_button {
+.quantity_container .add-to-cart,
+.quantity_container .single_add_to_cart_button {
   grid-column: 2/3;
   grid-row: 1/2;
 }
-
-.quantity_container button.buy_now,
-.quantity_container button.wc-buy-now-btn {
+.quantity_container .buy-now-btn {
   grid-column: 1/3;
   grid-row: 2/3;
   font-size: 20px;
   height: 3.2rem;
+  text-align: center;
+  line-height: 3.2rem;
 }
 
 .description_container {
